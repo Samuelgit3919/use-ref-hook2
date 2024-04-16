@@ -1,25 +1,45 @@
-import logo from './logo.svg';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import './App.css';
 
-function App() {
+export default function App() {
+  const [text, setText] = React.useState("")
+  const [list, setList] = React.useState([])
+  const inputRef = React.useRef(null)
+
+  function handleChange(e) {
+    setText(e.target.value)
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (!text) {
+      return;
+    }
+    setList(prevList => [...prevList, text])
+    setText("")
+    inputRef.current.focus()
+    
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <h2>React Project Ideas</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          onChange={handleChange}
+          value={text}
+          placeholder="Idea"
+          ref={inputRef}
+        />
+        <button>Submit</button>
+      </form>
+
+      <ol>
+        {list.map((item, i) => <li key={i}>{item}</li>)}
+      </ol>
+    </>
+  )
 }
 
-export default App;
